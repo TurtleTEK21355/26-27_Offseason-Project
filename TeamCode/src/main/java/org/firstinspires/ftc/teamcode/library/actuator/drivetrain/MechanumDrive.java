@@ -79,6 +79,36 @@ public class MechanumDrive {
     }
 
     /**
+     * Y IS FORWARDS AND BACKWARDS
+     * @param y +forwards and -backwards
+     * @param x strafe -left and +right
+     * @param h turn +right and -left
+     */
+    public void rcControl(double y, double x, double h){
+        // Uses dead zone and applies drivetrain exponent index
+        x = (Math.abs(x)<0.2) ? 0 : Math.pow(x, Constants.drivetrainExponentIndex);
+        y = (Math.abs(y)<0.2) ? 0 : Math.pow(y, Constants.drivetrainExponentIndex);
+        h = (Math.abs(h)<0.2) ? 0 : Math.pow(h, Constants.drivetrainExponentIndex);
+
+        // Calculates motor values before being compressed to range
+        double fr = y - x - h;
+        double fl = y + x + h;
+        double br = y + x - h;
+        double bl = y - x + h;
+
+        // Calculates scale to compress motor values to range [-1,1]
+        double max = Math.max(Math.max(Math.abs(fr), Math.abs(fl)), Math.max(Math.abs(br), Math.abs(bl)));
+        double magnitude = Math.sqrt(x*x + y*y + h*h)/Math.sqrt(3);
+        double scale = (max > 0) ? (magnitude / max) : 0;
+
+        // Applies scale to set motor powers
+        frontRightMotor.setPower(fr*scale);
+        frontLeftMotor.setPower(fl*scale);
+        backRightMotor.setPower(br*scale);
+        backLeftMotor.setPower(bl*scale);
+    }
+
+    /**
      * Sends the power of each drive train motor to telemetry
       */
     public void powerTelemetry() {
