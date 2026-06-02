@@ -1,31 +1,27 @@
 package org.firstinspires.ftc.teamcode.examples.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.hardware.GoBildaPinpoint;
-import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MechanumDrive;
-import org.firstinspires.ftc.teamcode.library.actuator.mechanisms.LimitedMotor;
-import org.firstinspires.ftc.teamcode.library.sensor.localization.Pinpoint;
+import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MecanumDrive;
 
 public class FirstPollenBot {
-    private MechanumDrive drivetrain;
+    private MecanumDrive drivetrain;
 //    private Pinpoint pinpoint;
     private DcMotor viperSlide;
     private Servo gate;
     private DcMotor intake;
 
 
-    public FirstPollenBot(MechanumDrive drivetrain, DcMotor viperSlide, Servo gate, DcMotor intake) {
+    public FirstPollenBot(MecanumDrive drivetrain, DcMotor viperSlide, Servo gate, DcMotor intake) {
         this.drivetrain = drivetrain;
 //        this.pinpoint = pinpoint;
         this.viperSlide = viperSlide;
         this.gate = gate;
         this.intake = intake;
     }
-    public MechanumDrive getDrivetrain(){
+    public MecanumDrive getDrivetrain(){
         return drivetrain;
     }
 //    public Pinpoint getPinpoint() {return pinpoint;}
@@ -43,7 +39,7 @@ public class FirstPollenBot {
      */
     public static FirstPollenBot build(HardwareMap hardwareMap) {
         return new FirstPollenBot(
-                new MechanumDrive(
+                new MecanumDrive(
                         hardwareMap.get(DcMotor.class, FirstPollenBotHardwareName.FRONT_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, FirstPollenBotHardwareName.FRONT_RIGHT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, FirstPollenBotHardwareName.BACK_LEFT_MOTOR.getName()),

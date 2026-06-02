@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.examples.command;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MechanumDrive;
+import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MecanumDrive;
 import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.library.sensor.localization.OTOSSensor;
 
@@ -14,7 +14,7 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
 
 
 
-    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, MechanumDrive drivetrain, OTOSSensor otosSensor) {
+    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, MecanumDrive drivetrain, OTOSSensor otosSensor) {
         super(target, speed, drivetrain, otosSensor);
         this.holdTime = holdTime;
     }
