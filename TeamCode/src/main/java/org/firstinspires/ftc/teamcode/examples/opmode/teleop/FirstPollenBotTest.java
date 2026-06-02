@@ -41,6 +41,7 @@ public class FirstPollenBotTest extends LinearOpMode {
 //            robot.getPinpoint().positionTelemetry();
             robot.getViperSlide().setPower(-gamepad2.left_stick_y);
             robot.getGate().setPosition(gamepad2.left_trigger);
+            robot.getIntake().setPower(gamepad2.right_trigger);
             telemetry.update();
         }
     }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.examples.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -22,8 +23,12 @@ public class FirstPollenBot {
         this.drivetrain = drivetrain;
 //        this.pinpoint = pinpoint;
         this.viperSlide = viperSlide;
+        this.viperSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.viperSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.gate = gate;
+        this.gate.setDirection(Servo.Direction.REVERSE);
         this.intake = intake;
+        this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     public MechanumDrive getDrivetrain(){
         return drivetrain;
