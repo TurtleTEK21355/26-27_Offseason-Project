@@ -1,17 +1,12 @@
 package org.firstinspires.ftc.teamcode.examples.robot;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.GoBildaPinpoint;
 import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MechanumDrive;
 import org.firstinspires.ftc.teamcode.library.sensor.localization.OTOSSensor;
 import org.firstinspires.ftc.teamcode.library.sensor.localization.Pinpoint;
-import org.firstinspires.ftc.teamcode.library.sensor.localization.Webcam;
 
 public class ProgrammingChassis {
     private MechanumDrive drivetrain;
@@ -42,12 +37,12 @@ public class ProgrammingChassis {
     public static ProgrammingChassis build(HardwareMap hardwareMap) {
         return new ProgrammingChassis(
                 new MechanumDrive(
-                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
+                        hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.FRONT_LEFT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.FRONT_RIGHT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.BACK_LEFT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.BACK_RIGHT_MOTOR.getName())
                 ),
-                new Pinpoint(hardwareMap.get(GoBildaPinpoint.class, HardwareName.PINPOINT.getName()))
+                new Pinpoint(hardwareMap.get(GoBildaPinpoint.class, ProgrammingChassisHardwareName.PINPOINT.getName()))
         );
     }
 }
