@@ -1,7 +1,4 @@
 package org.firstinspires.ftc.teamcode.library.internal.math;
-
-import com.bylazar.configurables.annotations.Configurable;
-
 public class PathFollower {
 
     final double DISCRIMINANTTOLERANCE = 5;

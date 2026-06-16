@@ -68,7 +68,7 @@ public class TestIntersectionMath {
             if ((discriminant>discriminantTolerance || firstIntersectionX == null) && secondIntersectionX != null) {
                 secondIntersectionX += centerX;
                 secondIntersectionY += centerY;
-                assertEquals(22.6, (double) (Math.round(secondIntersectionY * 100)) / 100);
+                assertEquals(22.60, (double) (Math.round(secondIntersectionY * 100)) / 100);
                 assertEquals(9.58, (double) (Math.round(secondIntersectionX * 100)) / 100);
                 intersectionCount++;
             }
