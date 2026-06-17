@@ -1,78 +1,111 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+import org.firstinspires.ftc.teamcode.library.internal.Coordinate2D;
+import org.firstinspires.ftc.teamcode.library.internal.math.IntersectionMath;
 import org.junit.jupiter.api.Test;
 
-public class TestIntersectionMath {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
-    double centerX = 9.3;
-    double centerY = 31.6;
-    double lineStartX = 29;
-    double lineStartY = 41;
-    double lineEndX = 0.5;
-    double lineEndY = 14;
-    double feedforwardRadius = 9;
-    double discriminantTolerance = 5;
+public class TestIntersectionMath {
+    @Test
+    void circleHas2Intersections() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(0, 0);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(40, 50);
+        Coordinate2D circleCenter = new Coordinate2D(20, 30);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(2, intersections.size());
+        List<Coordinate2D> validCoords = new ArrayList<>();
+        validCoords.add(new Coordinate2D(17.17, 21.46));
+        validCoords.add(new Coordinate2D(27.71, 34.64));
+        boolean firstCoordinateCheck = false;
+        boolean secondCoordinateCheck = false;
+        for (Coordinate2D intersection : intersections) {
+            double intersectionX = roundToHundredths(intersection.x);
+            double intersectionY = roundToHundredths(intersection.y);
+
+            if (validCoords.get(0).x == intersectionX && validCoords.get(0).y == intersectionY)
+                firstCoordinateCheck = true;
+            else if (validCoords.get(1).x == intersectionX && validCoords.get(1).y == intersectionY)
+                secondCoordinateCheck = true;
+        }
+        assertTrue(firstCoordinateCheck && secondCoordinateCheck);
+
+    }
 
     @Test
-    void intersectionMath() {
-        lineStartX -= centerX;
-        lineStartY -= centerY;
-        lineEndX -= centerX;
-        lineEndY -= centerY;
+    void circleHas1Intersection() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(-10, 0);
+        Coordinate2D lineSegmentEnd =   new Coordinate2D(10, 0);
+        Coordinate2D circleCenter =     new Coordinate2D(0, 9);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(1, intersections.size());
+        assertEquals(0, roundToHundredths(intersections.get(0).x));
+        assertEquals(0, roundToHundredths(intersections.get(0).y));
+    }
 
-        double dX = lineEndX-lineStartX;
-        double dY = lineEndY-lineStartY;
-        double segmentLength = Math.sqrt((dX*dX)+(dY*dY));
-        double determinant = (lineStartX*lineEndY)-(lineEndX*lineStartY);
-        double sign;
-        if (dY<0) sign = -1;
-        else sign = 1;
+    @Test
+    void circleHasNoIntersections() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(10, 5);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(40, -50);
+        Coordinate2D circleCenter = new Coordinate2D(20, 60);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(0, intersections.size());
+    }
 
-        double discriminant = (feedforwardRadius*feedforwardRadius*segmentLength*segmentLength)-(determinant*determinant);
+    @Test
+    void circleHas1IntersectionDueToSegmentBounds() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(-3, -3);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(8, 8);
+        Coordinate2D circleCenter = new Coordinate2D(0, 0);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(1, intersections.size());
+        assertEquals(6.36, roundToHundredths(intersections.get(0).x));
+        assertEquals(6.36, roundToHundredths(intersections.get(0).y));
+    }
 
-        Double firstIntersectionX = null;
-        Double secondIntersectionX = null;
-        Double firstIntersectionY = null;
-        Double secondIntersectionY = null;
+    @Test
+    void circleHasNoIntersectionsDueToSegmentBoundsOutside() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(6.5, -8.5);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(19, 2);
+        Coordinate2D circleCenter = new Coordinate2D(27.8, 7.7);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(0, intersections.size());
+    }
 
-        int intersectionCount = 0;
+    void circleHasNoIntersectionsDueToSegmentBoundsInside() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(-10.5, -3.5);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(-8.5, 8);
+        Coordinate2D circleCenter = new Coordinate2D(-7.2, 2.5);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(0, intersections.size());
+    }
 
-        if (discriminant >= 0) {
-            firstIntersectionX = ((determinant * dY) + (sign * dX * Math.sqrt(discriminant))) / (segmentLength * segmentLength);
-            secondIntersectionX = ((determinant * dY) - (sign * dX * Math.sqrt(discriminant))) / (segmentLength * segmentLength);
+    @Test
+    void circleHas1IntersectionDueToProximity() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(0, 0);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(24, 0);
+        Coordinate2D circleCenter = new Coordinate2D(12, 8.99);
+        List<Coordinate2D> intersections = IntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertEquals(1, intersections.size());
+        assertTrue(roundToHundredths(intersections.get(0).x) == 11.58 || roundToHundredths(intersections.get(0).x) == 12.42);
+        assertEquals(0, roundToHundredths(intersections.get(0).y));
+    }
 
-            double yOffset = Math.abs(dY) * Math.sqrt(discriminant);
-
-            firstIntersectionY = ((-determinant * dX) + yOffset) / (segmentLength * segmentLength);
-            secondIntersectionY = ((-determinant * dX) - yOffset) / (segmentLength * segmentLength);
-
-            if (firstIntersectionX<Math.min(lineStartX, lineEndX)||firstIntersectionX>Math.max(lineStartX, lineEndX)||firstIntersectionY<Math.min(lineStartY, lineEndY)||firstIntersectionY>Math.max(lineStartY, lineEndY)) {
-                firstIntersectionX = null;
-                firstIntersectionY = null;
-            }
-            if (secondIntersectionX<Math.min(lineStartX, lineEndX)||secondIntersectionX>Math.max(lineStartX, lineEndX)||secondIntersectionY<Math.min(lineStartY, lineEndY)||secondIntersectionY>Math.max(lineStartY, lineEndY)) {
-                secondIntersectionX = null;
-                secondIntersectionY = null;
-            }
-
-            if (firstIntersectionX != null) {
-                firstIntersectionX += centerX;
-                firstIntersectionY += centerY;
-                assertEquals(30.83, (double) (Math.round(firstIntersectionY * 100)) / 100);
-                assertEquals(18.27, (double) (Math.round(firstIntersectionX * 100)) / 100);
-                intersectionCount++;
-            }
-            if ((discriminant>discriminantTolerance || firstIntersectionX == null) && secondIntersectionX != null) {
-                secondIntersectionX += centerX;
-                secondIntersectionY += centerY;
-                assertEquals(22.60, (double) (Math.round(secondIntersectionY * 100)) / 100);
-                assertEquals(9.58, (double) (Math.round(secondIntersectionX * 100)) / 100);
-                intersectionCount++;
-            }
-            assertEquals(2, intersectionCount);
-        }
+    double roundToHundredths(double input) {
+        return BigDecimal.valueOf(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
