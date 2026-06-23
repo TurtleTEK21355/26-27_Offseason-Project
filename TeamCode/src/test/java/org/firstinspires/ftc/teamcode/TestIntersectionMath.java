@@ -105,6 +105,20 @@ public class TestIntersectionMath {
         assertEquals(0, roundToHundredths(intersections.get(0).y));
     }
 
+    @Test
+    void pointIsFurtherAlongLineSegment() {
+        Coordinate2D lineSegmentStart = new Coordinate2D(0, 0);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(10, 10);
+        ArrayList<Coordinate2D> intersections = new ArrayList<>();
+        intersections.add(new Coordinate2D(2, 2));
+        intersections.add(new Coordinate2D(40, 0));
+        intersections.add(new Coordinate2D(12, 12.001));
+        intersections.add(new Coordinate2D(8,8));
+        Coordinate2D closerIntersection = IntersectionMath.pointFurthestAlongLineSegment(lineSegmentEnd, intersections);
+        assertTrue (closerIntersection != null);
+        assertTrue(closerIntersection.x == 8 && closerIntersection.y == 8);
+    }
+
     double roundToHundredths(double input) {
         return BigDecimal.valueOf(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }

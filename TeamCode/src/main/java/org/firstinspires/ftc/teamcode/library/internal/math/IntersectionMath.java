@@ -43,4 +43,21 @@ public class IntersectionMath {
         }
         return intersections;
     }
+    public static Coordinate2D pointFurthestAlongLineSegment(Coordinate2D lineSegmentEnd, List<Coordinate2D> intersections) {
+        Double smallestDistance = null;
+        Integer smallestDistanceIndex = null;
+        for (int i = 0; i < intersections.size(); i++) {
+            double distance = Coordinate2D.distanceBetweenTwoPoints(intersections.get(i), lineSegmentEnd);
+
+            if (smallestDistance == null || distance < smallestDistance) {
+                smallestDistance = distance;
+                smallestDistanceIndex = i;
+            }
+        }
+        if (smallestDistanceIndex != null) {
+            return intersections.get(smallestDistanceIndex);
+        } else {
+            return null;
+        }
+    }
 }
