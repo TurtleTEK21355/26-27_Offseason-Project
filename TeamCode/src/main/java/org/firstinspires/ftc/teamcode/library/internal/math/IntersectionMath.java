@@ -36,7 +36,7 @@ public class IntersectionMath {
                  || intersection.y < Math.min(lineSegmentStart.y, lineSegmentEnd.y) || intersection.y > Math.max(lineSegmentStart.y, lineSegmentEnd.y));
             intersections.forEach(intersection -> intersection.translate(circleCenter));
             if (intersections.size() == 2) {
-                if (Coordinate2D.distanceBetweenTwoPoints(intersections.get(0), intersections.get(1)) <= MathConstants.intersectionMaxMergeDistance) {
+                if (Coordinate2D.distanceBetweenPoints(intersections.get(0), intersections.get(1)) <= MathConstants.intersectionMaxMergeDistance) {
                     intersections.remove(1);
                 }
             }
@@ -46,14 +46,16 @@ public class IntersectionMath {
     public static Coordinate2D pointFurthestAlongLineSegment(Coordinate2D lineSegmentEnd, List<Coordinate2D> intersections) {
         Double smallestDistance = null;
         Integer smallestDistanceIndex = null;
+
         for (int i = 0; i < intersections.size(); i++) {
-            double distance = Coordinate2D.distanceBetweenTwoPoints(intersections.get(i), lineSegmentEnd);
+            double distance = Coordinate2D.distanceBetweenPoints(intersections.get(i), lineSegmentEnd);
 
             if (smallestDistance == null || distance < smallestDistance) {
                 smallestDistance = distance;
                 smallestDistanceIndex = i;
             }
         }
+
         if (smallestDistanceIndex != null) {
             return intersections.get(smallestDistanceIndex);
         } else {

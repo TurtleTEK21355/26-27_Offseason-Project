@@ -16,7 +16,10 @@ public class Coordinate2D {
         x += addend.x;
         y += addend.y;
     }
-    public static double distanceBetweenTwoPoints(Coordinate2D firstPoint, Coordinate2D secondPoint) {
+
+//    To add if needed: reflect(double axis), rotate(double degrees), stretch(Double axis, double amount)
+
+    public static double distanceBetweenPoints(Coordinate2D firstPoint, Coordinate2D secondPoint) {
         return (Math.sqrt(Math.pow(firstPoint.x-secondPoint.x, 2)+Math.pow(firstPoint.y-secondPoint.y, 2)));
     }
 }
