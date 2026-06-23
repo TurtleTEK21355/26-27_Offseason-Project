@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.examples.command;
 
 import org.firstinspires.ftc.teamcode.examples.robot.Constants;
-import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MechanumDrive;
+import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MecanumDrive;
 import org.firstinspires.ftc.teamcode.library.commandsinternal.Command;
 import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.library.internal.pid.PIDControllerHeading;
@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.library.sensor.localization.OTOSSensor;
 public class MovePIDCommand extends Command {
     private Pose2D position;
     double speed;
-    MechanumDrive drivetrain;
+    MecanumDrive drivetrain;
     OTOSSensor otosSensor;
     PIDControllerSpeedLimit yPID;
     PIDControllerSpeedLimit xPID;
@@ -28,7 +28,7 @@ public class MovePIDCommand extends Command {
      * @param drivetrain
      * @param otosSensor
      */
-    public MovePIDCommand(Pose2D target, double speed, MechanumDrive drivetrain, OTOSSensor otosSensor) {
+    public MovePIDCommand(Pose2D target, double speed, MecanumDrive drivetrain, OTOSSensor otosSensor) {
         this.drivetrain = drivetrain;
         this.otosSensor = otosSensor;
         this.speed = speed;

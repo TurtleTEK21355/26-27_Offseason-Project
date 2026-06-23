@@ -4,20 +4,20 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.hardware.GoBildaPinpoint;
-import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MechanumDrive;
+import org.firstinspires.ftc.teamcode.library.actuator.drivetrain.MecanumDrive;
 import org.firstinspires.ftc.teamcode.library.sensor.localization.OTOSSensor;
 import org.firstinspires.ftc.teamcode.library.sensor.localization.Pinpoint;
 
 public class ProgrammingChassis {
-    private MechanumDrive drivetrain;
+    private MecanumDrive drivetrain;
     private OTOSSensor otosSensor;
     private Pinpoint pinpoint;
 
-    public ProgrammingChassis(MechanumDrive drivetrain, Pinpoint pinpoint) {
+    public ProgrammingChassis(MecanumDrive drivetrain, Pinpoint pinpoint) {
         this.drivetrain = drivetrain;
         this.pinpoint = pinpoint;
     }
-    public MechanumDrive getDrivetrain(){
+    public MecanumDrive getDrivetrain(){
         return drivetrain;
     }
 
@@ -36,7 +36,7 @@ public class ProgrammingChassis {
      */
     public static ProgrammingChassis build(HardwareMap hardwareMap) {
         return new ProgrammingChassis(
-                new MechanumDrive(
+                new MecanumDrive(
                         hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.FRONT_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.FRONT_RIGHT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.BACK_LEFT_MOTOR.getName()),

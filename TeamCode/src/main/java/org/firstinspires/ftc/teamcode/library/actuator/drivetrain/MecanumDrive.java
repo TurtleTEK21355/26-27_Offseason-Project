@@ -10,10 +10,10 @@ import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser
 
 /**
  * <div style="background-color: #0CA366; color: black; border-bottom: 4px dashed black;">
- * <h1>Mechanum Drive</h1>
- * <p>This drivetrain type uses 4 mechanum wheels in a standard linear setup.
+ * <h1>mecanum Drive</h1>
+ * <p>This drivetrain type uses 4 mecanum wheels in a standard linear setup.
  * This layout allows for optimal control on a flat surface.
- * Due to the nature of mechanum wheel,
+ * Due to the nature of mecanum wheel,
  * this drivetrain type is not optimal for slopes or rough surfaces.</p>
  * </div>
  * <div style="background-color: #009AD2; color: black; border-top: 4px dashed black;">
@@ -35,24 +35,24 @@ import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser
  * @since 03/15/2026
  * @version 0.1.0 (04/02/2026)
  */
-public class MechanumDrive {
-    private final DcMotor frontLeftMotor;
-    private final DcMotor frontRightMotor;
-    private final DcMotor backLeftMotor;
-    private final DcMotor backRightMotor;
+public class MecanumDrive {
+    private final DcMotor leftFront;
+    private final DcMotor rightFront;
+    private final DcMotor leftBack;
+    private final DcMotor rightBack;
 
 
-    public MechanumDrive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
-        this.frontLeftMotor = frontLeft;
-        this.frontRightMotor = frontRight;
-        this.backLeftMotor = backLeft;
-        this.backRightMotor = backRight;
-        this.frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    public MecanumDrive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
+        this.leftFront = frontLeft;
+        this.rightFront = frontRight;
+        this.leftBack = backLeft;
+        this.rightBack = backRight;
+        this.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         setWheelDirection(DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD);
 
     }
@@ -80,10 +80,10 @@ public class MechanumDrive {
      * @param h turn +right and -left
      */
     public void control(double y, double x, double h) {
-        frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
-        frontLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
-        backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
-        backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
+        rightFront.setPower(Range.clip(y - x - h, -1, 1));
+        leftFront.setPower(Range.clip(y + x + h, -1, 1));
+        rightBack.setPower(Range.clip(y + x - h, -1, 1));
+        leftBack.setPower(Range.clip(y - x + h, -1, 1));
     }
 
     /**
@@ -128,10 +128,10 @@ public class MechanumDrive {
         double scale = (max > Constants.drivetrainMinimumMoveableSpeed) ? (magnitude / max) : 0;
 
         // Applies scale to set motor powers
-        frontRightMotor.setPower(fr*scale);
-        frontLeftMotor.setPower(fl*scale);
-        backRightMotor.setPower(br*scale);
-        backLeftMotor.setPower(bl*scale);
+        rightFront.setPower(fr*scale);
+        leftFront.setPower(fl*scale);
+        rightBack.setPower(br*scale);
+        leftBack.setPower(bl*scale);
     }
 
     /**
@@ -139,17 +139,17 @@ public class MechanumDrive {
       */
     public void powerTelemetry() {
         TelemetryPasser.telemetry.addLine()
-                .addData("Front Left Drivetrain Power: ", frontLeftMotor.getPower())
-                .addData("Front Right Drivetrain Power: ", frontRightMotor.getPower())
-                .addData("Back Left Drivetrain Power: ", backLeftMotor.getPower())
-                .addData("Back Right Drivetrain Power: ", backRightMotor.getPower());
+                .addData("Front Left Drivetrain Power: ", leftFront.getPower())
+                .addData("Front Right Drivetrain Power: ", rightFront.getPower())
+                .addData("Back Left Drivetrain Power: ", leftBack.getPower())
+                .addData("Back Right Drivetrain Power: ", rightBack.getPower());
     }
 
     public void setWheelDirection(DcMotorSimple.Direction lf, DcMotorSimple.Direction rf, DcMotorSimple.Direction lb, DcMotorSimple.Direction rb) {
-        this.frontLeftMotor.setDirection(lf);
-        this.frontRightMotor.setDirection(rf);
-        this.backLeftMotor.setDirection(lb);
-        this.backRightMotor.setDirection(rb);
+        this.leftFront.setDirection(lf);
+        this.rightFront.setDirection(rf);
+        this.leftBack.setDirection(lb);
+        this.rightBack.setDirection(rb);
 
     }
 }
