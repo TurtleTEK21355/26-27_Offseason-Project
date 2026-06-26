@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.library.internal;
+package org.firstinspires.ftc.teamcode.library.internal.math;
 
 public class Coordinate2D {
     public double x;

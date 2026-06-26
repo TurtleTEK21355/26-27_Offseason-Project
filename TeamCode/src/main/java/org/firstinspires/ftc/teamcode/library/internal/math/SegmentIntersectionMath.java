@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.library.internal.math;
 
-import org.firstinspires.ftc.teamcode.library.internal.Coordinate2D;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntersectionMath {
+public class SegmentIntersectionMath {
     public static List<Coordinate2D> intersectionsLineSegmentAndCircle(Coordinate2D lineSegmentStart, Coordinate2D lineSegmentEnd, Coordinate2D circleCenter, double feedforwardRadius) {
         lineSegmentStart.translate(circleCenter.negative());
         lineSegmentEnd.translate(circleCenter.negative());
