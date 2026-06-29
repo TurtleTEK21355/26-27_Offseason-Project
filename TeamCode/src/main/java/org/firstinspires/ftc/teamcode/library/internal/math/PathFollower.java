@@ -18,21 +18,18 @@ public class PathFollower {
     }
 
     public static Coordinate2D getClosestPositionOnLine(Coordinate2D lineSegmentStart, Coordinate2D lineSegmentEnd, Coordinate2D robotPosition) {
-        double lineXLength = lineSegmentEnd.x - lineSegmentStart.x;
-        double lineYLength = lineSegmentEnd.y - lineSegmentStart.y;
-        double startToPositionXLength = robotPosition.x - lineSegmentStart.x;
-        double startToPositionYLength = robotPosition.y - lineSegmentStart.y;
+        Coordinate2D lineLengths = new Coordinate2D(lineSegmentEnd.x - lineSegmentStart.x,
+                                                   lineSegmentEnd.y - lineSegmentStart.y);
+        Coordinate2D startToPositionLengths = new Coordinate2D(robotPosition.x - lineSegmentStart.x,
+                                                               robotPosition.y - lineSegmentStart.y);
 
-        double dotProductStartLineToPosition = startToPositionXLength * lineXLength + startToPositionYLength * lineYLength;
-        double lineSquaredMagnitude = lineXLength * lineXLength + lineYLength * lineYLength;
-
+        double dotProductStartLineToPosition = startToPositionLengths.x * lineLengths.x + startToPositionLengths.y * lineLengths.y;
+        double lineSquaredMagnitude = lineLengths.x * lineLengths.x + lineLengths.y * lineLengths.y;
         if (lineSquaredMagnitude == 0) return new Coordinate2D(lineSegmentStart.x, lineSegmentStart.y);
 
         double projectionFactor = Range.clip(dotProductStartLineToPosition / lineSquaredMagnitude, 0, 1);
-        double closestX = lineSegmentStart.x + (lineXLength * projectionFactor);
-        double closestY = lineSegmentStart.y + (lineYLength * projectionFactor);
-
-        return new Coordinate2D(closestX, closestY);
+        return new Coordinate2D(lineSegmentStart.x + (lineLengths.x * projectionFactor),
+                                lineSegmentStart.y + (lineLengths.y * projectionFactor));
     }
 
 }
