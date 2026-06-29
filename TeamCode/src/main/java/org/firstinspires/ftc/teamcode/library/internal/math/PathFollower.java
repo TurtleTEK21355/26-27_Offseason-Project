@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.library.internal.math;
 
-import java.util.ArrayList;
+import com.qualcomm.robotcore.util.Range;
+
 import java.util.List;
 
 public class PathFollower {
@@ -16,25 +17,20 @@ public class PathFollower {
         currentSegmentIndex = startingIndex;
     }
 
-    public static Coordinate2D getClosestPointOnLine(Coordinate2D lineSegmentStart, Coordinate2D lineSegmentEnd, Coordinate2D robotPosition) {
-        double abX = lineSegmentEnd.x - lineSegmentStart.x;
-        double abY = lineSegmentEnd.y - lineSegmentStart.y;
-        double apX = robotPosition.x - lineSegmentStart.x;
-        double apY = robotPosition.y - lineSegmentStart.y;
+    public static Coordinate2D getClosestPositionOnLine(Coordinate2D lineSegmentStart, Coordinate2D lineSegmentEnd, Coordinate2D robotPosition) {
+        double lineXLength = lineSegmentEnd.x - lineSegmentStart.x;
+        double lineYLength = lineSegmentEnd.y - lineSegmentStart.y;
+        double startToPositionXLength = robotPosition.x - lineSegmentStart.x;
+        double startToPositionYLength = robotPosition.y - lineSegmentStart.y;
 
-        double dotAP_AB = apX * abX + apY * abY;
-        double dotAB_AB = abX * abX + abY * abY;
+        double dotProductStartLineToPosition = startToPositionXLength * lineXLength + startToPositionYLength * lineYLength;
+        double lineSquaredMagnitude = lineXLength * lineXLength + lineYLength * lineYLength;
 
-        if (dotAB_AB == 0) {
-            return new Coordinate2D(lineSegmentStart.x, lineSegmentStart.y);
-        }
+        if (lineSquaredMagnitude == 0) return new Coordinate2D(lineSegmentStart.x, lineSegmentStart.y);
 
-        double t = dotAP_AB / dotAB_AB;
-
-         t = Math.max(0f, Math.min(1f, t));
-
-        double closestX = lineSegmentStart.x + t * abX;
-        double closestY = lineSegmentStart.y + t * abY;
+        double projectionFactor = Range.clip(dotProductStartLineToPosition / lineSquaredMagnitude, 0, 1);
+        double closestX = lineSegmentStart.x + (lineXLength * projectionFactor);
+        double closestY = lineSegmentStart.y + (lineYLength * projectionFactor);
 
         return new Coordinate2D(closestX, closestY);
     }
