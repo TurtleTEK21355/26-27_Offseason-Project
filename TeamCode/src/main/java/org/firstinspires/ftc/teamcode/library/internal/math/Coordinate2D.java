@@ -17,7 +17,9 @@ public class Coordinate2D {
         y += addend.y;
     }
 
-//    To add if needed: reflect(double axis), rotate(double degrees), stretch(Double axis, double amount)
+    public boolean equals(Coordinate2D check) {
+        return (x == check.x && y == check.y);
+    }
 
     public static double distanceBetweenPoints(Coordinate2D firstPoint, Coordinate2D secondPoint) {
         return (Math.sqrt(Math.pow(firstPoint.x-secondPoint.x, 2)+Math.pow(firstPoint.y-secondPoint.y, 2)));

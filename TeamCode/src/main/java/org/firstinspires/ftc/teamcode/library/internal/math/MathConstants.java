@@ -7,4 +7,5 @@ import com.bylazar.configurables.annotations.Configurable;
 @Configurable
 public class MathConstants {
     public static double intersectionMaxMergeDistance = 1;
+    public static double pathLookaheadDistance = 18;
 }
