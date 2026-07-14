@@ -34,21 +34,6 @@ public class TestPathFollower {
         assertEquals(10, closestPoint.x);
         assertEquals(10, closestPoint.y);
     }
-
-    // TODO: Remove?
-    @Test
-    void testActualPath(){
-        PController xController = new PController(0.05, 0, 2);
-        PController yController = new PController(0.05, 0, 2);
-        ArrayList<Coordinate2D> path = new ArrayList<>();
-        path.add(new Coordinate2D(0,0));
-        path.add(new Coordinate2D(10,0));
-        path.add(new Coordinate2D(10,10));
-        path.add(new Coordinate2D(0,10));
-        path.add(new Coordinate2D(0,0));
-        PathFollower pathFollower = new PathFollower(path, xController, yController);
-    }
-
     @Test
     void testPathFollower() {
         MockDT dt = new MockDT(new Pose2D(0, 0, 0));

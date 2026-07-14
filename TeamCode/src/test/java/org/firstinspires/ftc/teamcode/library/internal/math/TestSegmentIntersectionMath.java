@@ -116,6 +116,22 @@ public class TestSegmentIntersectionMath {
         assertTrue(closerIntersection.x == 8 && closerIntersection.y == 8);
     }
 
+    @Test
+    void inputDoesNotChange() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(-10, 0);
+        Coordinate2D lineSegmentEnd =   new Coordinate2D(10, 0);
+        Coordinate2D circleCenter =     new Coordinate2D(0, 9);
+        Coordinate2D lineSegmentStartReference = new Coordinate2D(-10, 0);
+        Coordinate2D lineSegmentEndReference =   new Coordinate2D(10, 0);
+        Coordinate2D circleCenterReference =     new Coordinate2D(0, 9);
+        SegmentIntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        assertTrue(lineSegmentStartReference.equals(lineSegmentStart));
+        assertTrue(lineSegmentEndReference.equals(lineSegmentEnd));
+        assertTrue(circleCenterReference.equals(circleCenter));
+
+    }
+
     double roundToHundredths(double input) {
         return BigDecimal.valueOf(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }

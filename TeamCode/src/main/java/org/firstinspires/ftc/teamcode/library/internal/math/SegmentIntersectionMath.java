@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SegmentIntersectionMath {
-    public static List<Coordinate2D> intersectionsLineSegmentAndCircle(Coordinate2D lineSegmentStart, Coordinate2D lineSegmentEnd, Coordinate2D circleCenter, double feedforwardRadius) {
+    public static List<Coordinate2D> intersectionsLineSegmentAndCircle(Coordinate2D lineSegmentStartPassIn, Coordinate2D lineSegmentEndPassIn, Coordinate2D circleCenterPassIn, double feedforwardRadius) {
+        Coordinate2D lineSegmentStart = new Coordinate2D(lineSegmentStartPassIn.x, lineSegmentStartPassIn.y);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(lineSegmentEndPassIn.x, lineSegmentEndPassIn.y);
+        Coordinate2D circleCenter = new Coordinate2D(circleCenterPassIn.x, circleCenterPassIn.y);
+
         lineSegmentStart.translate(circleCenter.negative());
         lineSegmentEnd.translate(circleCenter.negative());
 
