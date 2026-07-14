@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.library.internal.math.Coordinate2D;
 import org.firstinspires.ftc.teamcode.library.internal.math.PathFollower;
 import org.firstinspires.ftc.teamcode.library.internal.pid.PController;
+import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser;
 
 import java.util.ArrayList;
 
@@ -16,21 +17,29 @@ public class TestCustomPathFollowing extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        TelemetryPasser.telemetry = telemetry;
         waitForStart();
         ProgrammingChassis robot = ProgrammingChassis.build(hardwareMap);
-        robot.getOdometry().resetPosition();
-        PController xController = new PController(0.05, 0, 2);
-        PController yController = new PController(0.05, 0, 2);
+        robot.getPinpoint().resetPosition();
+        PController xController = new PController(0.3, 0, 2);
+        PController yController = new PController(0.3, 0, 2);
         ArrayList<Coordinate2D> path = new ArrayList<>();
         path.add(new Coordinate2D(0,0));
-        path.add(new Coordinate2D(10,0));
-        path.add(new Coordinate2D(10,10));
+        path.add(new Coordinate2D(-10,0));
+        path.add(new Coordinate2D(-10,10));
         path.add(new Coordinate2D(0,10));
         path.add(new Coordinate2D(0,0));
         PathFollower pathFollower = new PathFollower(path, xController, yController);
+        Pose2D pose;
         while (opModeIsActive()) {
-            Pose2D pose = robot.getOdometry().getPosition();
-            robot.getDrivetrain().control(pathFollower.getYSpeed(pose.y), pathFollower.getXSpeed(pose.x), 0);
+            pose = robot.getPinpoint().getPosition();
+            robot.getPinpoint().positionTelemetry();
+
+            pathFollower.updatePControllerTarget(pose);
+            robot.getDrivetrain().simulateFCControl(pathFollower.getYSpeed(pose.y), pathFollower.getXSpeed(pose.x), 0, pose.h);
+//            robot.getDrivetrain().powerTelemetry();
+
+            telemetry.update();
         }
     }
 }

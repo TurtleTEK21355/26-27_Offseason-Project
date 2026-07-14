@@ -69,7 +69,7 @@ public class MechanumDrive {
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
 
-        control(correctedY, correctedX, h);
+        rcControl(correctedY, correctedX, h);
     }
 
 
@@ -79,11 +79,32 @@ public class MechanumDrive {
      * @param x strafe -left and +right
      * @param h turn +right and -left
      */
-    public void control(double y, double x, double h) {
+    public void rcControl(double y, double x, double h) {
         frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
         frontLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
+    }
+    public void simulateFCControl(double y, double x, double h, double heading) {
+        y = Math.pow(y, Constants.drivetrainExponentIndex);
+        x = Math.pow(x, Constants.drivetrainExponentIndex);
+        h = Math.pow(h, Constants.drivetrainExponentIndex);
+
+        double r = Math.hypot(y, x);
+        double theta = Math.atan2(y, x);
+
+        double correctedTheta = theta - Math.toRadians(heading);
+
+        double correctedY = r * Math.sin(correctedTheta);
+        double correctedX = r * Math.cos(correctedTheta);
+
+        simulateRCControl(correctedY, correctedX, h);
+    }
+    public void simulateRCControl(double y, double x, double h) {
+        TelemetryPasser.telemetry.addData("Front Right Motor", Range.clip(y - x - h, -1, 1));
+        TelemetryPasser.telemetry.addData("Front Left Motor", Range.clip(y + x + h, -1, 1));
+        TelemetryPasser.telemetry.addData("Back Right Motor", Range.clip(y + x - h, -1, 1));
+        TelemetryPasser.telemetry.addData("Back Left Motor", Range.clip(y - x + h, -1, 1));
     }
 
     /**

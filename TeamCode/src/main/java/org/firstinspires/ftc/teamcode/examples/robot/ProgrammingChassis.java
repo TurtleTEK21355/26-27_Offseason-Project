@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.examples.robot;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -11,18 +10,18 @@ import org.firstinspires.ftc.teamcode.library.sensor.localization.Pinpoint;
 
 public class ProgrammingChassis {
     private MechanumDrive drivetrain;
-    private OTOSSensor odometry;
+    private Pinpoint pinpoint;
 
-    public ProgrammingChassis(MechanumDrive drivetrain, OTOSSensor odometry) {
+    public ProgrammingChassis(MechanumDrive drivetrain, Pinpoint pinpoint) {
         this.drivetrain = drivetrain;
-        this.odometry = odometry;
+        this.pinpoint = pinpoint;
     }
     public MechanumDrive getDrivetrain(){
         return drivetrain;
     }
 
-    public OTOSSensor getOdometry() {
-        return odometry;
+    public Pinpoint getPinpoint() {
+        return pinpoint;
     }
 
 
@@ -42,7 +41,7 @@ public class ProgrammingChassis {
                         hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.BACK_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, ProgrammingChassisHardwareName.BACK_RIGHT_MOTOR.getName())
                 ),
-                new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, ProgrammingChassisHardwareName.ODOMETRY_SENSOR.getName()))
+                new Pinpoint(hardwareMap.get(GoBildaPinpoint.class, ProgrammingChassisHardwareName.PINPOINT.getName()))
         );
     }
 }

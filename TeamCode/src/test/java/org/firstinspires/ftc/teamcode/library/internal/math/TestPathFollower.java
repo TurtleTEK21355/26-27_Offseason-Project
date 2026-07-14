@@ -32,22 +32,17 @@ public class TestPathFollower {
         assertEquals(10, closestPoint.x);
         assertEquals(10, closestPoint.y);
     }
+
     @Test
-    void testGetFurthestLookaheadSegmentIndex() {
-        ArrayList<Coordinate2D> firstPath = new ArrayList<>();
-        firstPath.add(new Coordinate2D(0,0));
-        firstPath.add(new Coordinate2D(0,15));
-        firstPath.add(new Coordinate2D(15,15));
-        PathFollower firstPathFollower = new PathFollower(firstPath, unused, unused);
-        ArrayList<Coordinate2D> secondPath = new ArrayList<>();
-        secondPath.add(new Coordinate2D(0,0));
-        secondPath.add(new Coordinate2D(0,7.5));
-        secondPath.add(new Coordinate2D(7.5,7.5));
-        PathFollower secondPathFollower = new PathFollower(secondPath, unused, unused);
-        Coordinate2D robotPosition = new Coordinate2D(0,0);
-        firstPathFollower.updateFurthestLookaheadSegmentIndex(robotPosition);
-        secondPathFollower.updateFurthestLookaheadSegmentIndex(robotPosition);
-        assertEquals(1, firstPathFollower.getFurthestLookaheadSegmentIndex());
-        assertEquals(2, secondPathFollower.getFurthestLookaheadSegmentIndex());
+    void testActualPath(){
+        PController xController = new PController(0.05, 0, 2);
+        PController yController = new PController(0.05, 0, 2);
+        ArrayList<Coordinate2D> path = new ArrayList<>();
+        path.add(new Coordinate2D(0,0));
+        path.add(new Coordinate2D(10,0));
+        path.add(new Coordinate2D(10,10));
+        path.add(new Coordinate2D(0,10));
+        path.add(new Coordinate2D(0,0));
+        PathFollower pathFollower = new PathFollower(path, xController, yController);
     }
 }

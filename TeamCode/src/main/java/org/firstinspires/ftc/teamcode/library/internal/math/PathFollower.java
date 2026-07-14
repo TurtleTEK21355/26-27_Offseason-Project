@@ -2,24 +2,22 @@ package org.firstinspires.ftc.teamcode.library.internal.math;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.library.internal.pid.PController;
+import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser;
 
 import java.util.List;
 
 public class PathFollower {
-    private List<Coordinate2D> path;
+    private final List<Coordinate2D> path;
     PController xController;
     PController yController;
-    private int furthestLookaheadSegmentIndex;
 
     public PathFollower(List<Coordinate2D> path, PController xController, PController yController) {
         this.path = path;
         this.xController = xController;
         this.yController = yController;
     }
-
-    public int getFurthestLookaheadSegmentIndex() {return furthestLookaheadSegmentIndex;}
-
     public Coordinate2D getClosestPositionOnLine(Coordinate2D robotPosition) {
         Coordinate2D lineSegmentStart = path.get(0);
         Coordinate2D lineSegmentEnd = path.get(1);
@@ -37,36 +35,39 @@ public class PathFollower {
         if (closestPosition.equals(lineSegmentEnd) && path.size() > 2) {
             path.remove(0);
             return getClosestPositionOnLine(robotPosition);
-        } else {
-            return closestPosition;
-        }
-    }
-
-    public void updateFurthestLookaheadSegmentIndex(Coordinate2D robotPosition) {
-        double distanceAlreadyCrossed = Coordinate2D.distanceBetweenPoints(getClosestPositionOnLine(robotPosition), path.get(0));
-        double totalDistance = -distanceAlreadyCrossed;
-        int index = 0;
-        while (totalDistance < MathConstants.pathLookaheadDistance && path.size()-index > 1) {
-            totalDistance += Coordinate2D.distanceBetweenPoints(path.get(index), path.get(index+1));
-            if (totalDistance < MathConstants.pathLookaheadDistance) {
-                index++;
-            }
-        }
-        furthestLookaheadSegmentIndex = index;
+        } else return closestPosition;
     }
 
     public void updatePControllerTarget(Coordinate2D robotPosition) {
-        updateFurthestLookaheadSegmentIndex(robotPosition);
-        Coordinate2D result = null;
-        for (int i = 0; i <= furthestLookaheadSegmentIndex; i++) {
-            List<Coordinate2D> intersections = SegmentIntersectionMath.intersectionsLineSegmentAndCircle(path.get(i), path.get(i+1), robotPosition, 9);
-            if (intersections.isEmpty()) {
-            } else {
-                result = SegmentIntersectionMath.pointFurthestAlongLineSegment(path.get(i + 1), intersections);
+        double distanceAlreadyCrossed = Coordinate2D.distanceBetweenPoints(getClosestPositionOnLine(robotPosition), path.get(0));
+        double totalDistance = -distanceAlreadyCrossed;
+        int furthestLookaheadSegmentIndex = 0;
+        while (totalDistance < MathConstants.pathLookaheadDistance && path.size()-furthestLookaheadSegmentIndex > 1) {
+            totalDistance += Coordinate2D.distanceBetweenPoints(path.get(furthestLookaheadSegmentIndex), path.get(furthestLookaheadSegmentIndex+1));
+            if (totalDistance < MathConstants.pathLookaheadDistance) {
+                furthestLookaheadSegmentIndex++;
             }
         }
+        Coordinate2D result = null;
+        if(furthestLookaheadSegmentIndex != 0) {
+            for (int i = 0; i < furthestLookaheadSegmentIndex; i++) {
+                List<Coordinate2D> intersections = SegmentIntersectionMath.intersectionsLineSegmentAndCircle(path.get(i), path.get(i + 1), robotPosition, 9);
+                if (!intersections.isEmpty()) {
+                    result = SegmentIntersectionMath.pointFurthestAlongLineSegment(path.get(i + 1), intersections);
+                }
+            }
+            if (result == null) {
+                result = path.get(0);
+                TelemetryPasser.telemetry.addData("Found Intersections:", false);
+            }
+        } else result = path.get(0);
         xController.setTargetPosition(result.x);
-        xController.setTargetPosition(result.y);
+        yController.setTargetPosition(result.y);
+        TelemetryPasser.telemetry.addData("Target Position:", "(" + result.x + ", " + result.y + ")");
+    }
+
+    public void updatePControllerTarget(Pose2D robotPosition) {
+        updatePControllerTarget(new Coordinate2D(robotPosition.x, robotPosition.y));
     }
 
     public double getXSpeed(double robotXPosition) {return xController.calculate(robotXPosition);}

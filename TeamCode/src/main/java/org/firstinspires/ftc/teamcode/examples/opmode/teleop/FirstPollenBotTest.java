@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.examples.robot.FirstPollenBot;
-import org.firstinspires.ftc.teamcode.examples.robot.FirstPollenBotHardwareName;
-import org.firstinspires.ftc.teamcode.examples.robot.ProgrammingChassis;
 import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser;
 
 @TeleOp(name = "First Pollen Bot Test", group = "test")
@@ -37,7 +35,7 @@ public class FirstPollenBotTest extends LinearOpMode {
             Gamepad gamepad1 = virtualGamepad.getFirstManager().asCombinedFTCGamepad(super.gamepad1);
             Gamepad gamepad2 = virtualGamepad.getFirstManager().asCombinedFTCGamepad(super.gamepad2);
 
-            robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            robot.getDrivetrain().rcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 //            robot.getPinpoint().positionTelemetry();
             robot.getViperSlide().setPower(-gamepad2.left_stick_y);
             robot.getGate().setPosition(gamepad2.left_trigger);
