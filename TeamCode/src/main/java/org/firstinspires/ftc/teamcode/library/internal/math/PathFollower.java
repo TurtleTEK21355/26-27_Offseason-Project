@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.library.internal.pid.PController;
-import org.firstinspires.ftc.teamcode.library.internal.telemetry.TelemetryPasser;
 
 import java.util.List;
 
@@ -35,7 +34,8 @@ public class PathFollower {
         if (closestPosition.equals(lineSegmentEnd) && path.size() > 2) {
             path.remove(0);
             return getClosestPositionOnLine(robotPosition);
-        } else return closestPosition;
+        } else
+            return closestPosition;
     }
 
     public void updatePControllerTarget(Coordinate2D robotPosition) {
@@ -58,12 +58,12 @@ public class PathFollower {
             }
             if (result == null) {
                 result = path.get(0);
-                TelemetryPasser.telemetry.addData("Found Intersections:", false);
+//                TelemetryPasser.telemetry.addData("Found Intersections:", false);
             }
         } else result = path.get(0);
         xController.setTargetPosition(result.x);
         yController.setTargetPosition(result.y);
-        TelemetryPasser.telemetry.addData("Target Position:", "(" + result.x + ", " + result.y + ")");
+//        TelemetryPasser.telemetry.addData("Target Position:", "(" + result.x + ", " + result.y + ")");
     }
 
     public void updatePControllerTarget(Pose2D robotPosition) {

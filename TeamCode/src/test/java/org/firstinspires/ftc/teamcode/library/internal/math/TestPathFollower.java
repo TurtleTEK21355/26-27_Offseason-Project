@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.library.internal.math;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.firstinspires.ftc.teamcode.library.internal.Pose2D;
+import org.firstinspires.ftc.teamcode.library.internal.math.mock.MockDT;
 import org.firstinspires.ftc.teamcode.library.internal.pid.PController;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +35,7 @@ public class TestPathFollower {
         assertEquals(10, closestPoint.y);
     }
 
+    // TODO: Remove?
     @Test
     void testActualPath(){
         PController xController = new PController(0.05, 0, 2);
@@ -44,5 +47,34 @@ public class TestPathFollower {
         path.add(new Coordinate2D(0,10));
         path.add(new Coordinate2D(0,0));
         PathFollower pathFollower = new PathFollower(path, xController, yController);
+    }
+
+    @Test
+    void testPathFollower() {
+        MockDT dt = new MockDT(new Pose2D(0, 0, 0));
+
+        PController xController = new PController(0.1, 0, 2);
+        PController yController = new PController(0.1, 0, 2);
+
+        ArrayList<Coordinate2D> path = new ArrayList<>();
+        path.add(new Coordinate2D(0,0));
+        path.add(new Coordinate2D(10,0));
+//        path.add(new Coordinate2D(10,10));
+//        path.add(new Coordinate2D(0,10));
+//        path.add(new Coordinate2D(0,0));
+
+        PathFollower pathFollower = new PathFollower(path, xController, yController);
+
+        for (int i = 0; i < 100; i++) {
+            Pose2D pose = dt.getPosition();
+            pathFollower.updatePControllerTarget(pose);
+
+            double xPower = pathFollower.getXSpeed(pose.x);
+            double yPower = pathFollower.getYSpeed(pose.y);
+
+            dt.fcControl(xPower, yPower, 0);
+
+            dt.update();
+        }
     }
 }
