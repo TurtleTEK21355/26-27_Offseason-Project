@@ -55,11 +55,11 @@ public class MockDT {
     }
 
     public void update() {
-        position.x += velocity.x * posUnitsPerVel;
-        position.y += velocity.y * posUnitsPerVel;
+        position.x += velocity.x * posUnitsPerVel * (0.95+(Math.random()/20)) + (Math.random()/50);
+        position.y += velocity.y * posUnitsPerVel * (0.95+(Math.random()/20)) + (Math.random()/50);
 
         // TODO: Wrap heading position
-        position.h += velocity.h * radPerVel;
+        position.h += velocity.h * radPerVel * (0.95+(Math.random()/20)) + (Math.random()/50);
 
         position.h = ( ( position.h + 180 ) % 360 ) - 180;
 
