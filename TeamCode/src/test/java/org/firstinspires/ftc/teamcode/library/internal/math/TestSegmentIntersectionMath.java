@@ -132,6 +132,19 @@ public class TestSegmentIntersectionMath {
 
     }
 
+//        -3.71 -0.05
+    @Test
+    void specificValueTest() {
+        double circleRadius = 9;
+        Coordinate2D lineSegmentStart = new Coordinate2D(0, 0);
+        Coordinate2D lineSegmentEnd = new Coordinate2D(-24, 0);
+        Coordinate2D circleCenter = new Coordinate2D(-3.71, -0.05);
+        List<Coordinate2D> intersections = SegmentIntersectionMath.intersectionsLineSegmentAndCircle(lineSegmentStart, lineSegmentEnd, circleCenter, circleRadius);
+        for (int i = 0; i < intersections.size(); i++) {
+            System.out.println("("+intersections.get(i).x+", "+intersections.get(i).y+")");
+        }
+    }
+
     double roundToHundredths(double input) {
         return BigDecimal.valueOf(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }

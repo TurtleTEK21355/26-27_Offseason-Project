@@ -30,4 +30,8 @@ public class PController {
     public void setTargetPosition(double targetPosition) {
         this.targetPosition = targetPosition;
     }
+
+    public double getTargetPosition() {
+        return targetPosition;
+    }
 }

@@ -34,8 +34,8 @@ public class SegmentIntersectionMath {
                                                 ((-determinant * dX) - yOffset) / (segmentLength * segmentLength)));
 
             intersections.removeIf(intersection ->
-                    intersection.x < Math.min(lineSegmentStart.x, lineSegmentEnd.x) || intersection.x > Math.max(lineSegmentStart.x, lineSegmentEnd.x)
-                 || intersection.y < Math.min(lineSegmentStart.y, lineSegmentEnd.y) || intersection.y > Math.max(lineSegmentStart.y, lineSegmentEnd.y));
+                    intersection.x < Math.min(lineSegmentStart.x, lineSegmentEnd.x)-0.0001 || intersection.x > Math.max(lineSegmentStart.x, lineSegmentEnd.x)+0.0001
+                 || intersection.y < Math.min(lineSegmentStart.y, lineSegmentEnd.y)-0.0001 || intersection.y > Math.max(lineSegmentStart.y, lineSegmentEnd.y)+0.0001);
             intersections.forEach(intersection -> intersection.translate(circleCenter));
             if (intersections.size() == 2) {
                 if (Coordinate2D.distanceBetweenPoints(intersections.get(0), intersections.get(1)) <= MathConstants.intersectionMaxMergeDistance) {

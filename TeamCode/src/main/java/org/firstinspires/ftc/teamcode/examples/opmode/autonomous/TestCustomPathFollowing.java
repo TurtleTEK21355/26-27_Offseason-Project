@@ -21,13 +21,13 @@ public class TestCustomPathFollowing extends LinearOpMode {
         waitForStart();
         ProgrammingChassis robot = ProgrammingChassis.build(hardwareMap);
         robot.getPinpoint().resetPosition();
-        PController xController = new PController(0.3, 0, 2);
-        PController yController = new PController(0.3, 0, 2);
+        PController xController = new PController(0.1, 0, 2);
+        PController yController = new PController(0.1, 0, 2);
         ArrayList<Coordinate2D> path = new ArrayList<>();
         path.add(new Coordinate2D(0,0));
-        path.add(new Coordinate2D(-10,0));
-        path.add(new Coordinate2D(-10,10));
-        path.add(new Coordinate2D(0,10));
+        path.add(new Coordinate2D(-24,0));
+        path.add(new Coordinate2D(-24, 24));
+        path.add(new Coordinate2D(0,24));
         path.add(new Coordinate2D(0,0));
         PathFollower pathFollower = new PathFollower(path, xController, yController);
         Pose2D pose;
@@ -36,7 +36,10 @@ public class TestCustomPathFollowing extends LinearOpMode {
             robot.getPinpoint().positionTelemetry();
 
             pathFollower.updatePControllerTarget(pose);
+            pathFollower.targetTelemetry();
+
             robot.getDrivetrain().simulateFCControl(pathFollower.getYSpeed(pose.y), pathFollower.getXSpeed(pose.x), 0, pose.h);
+//            robot.getDrivetrain().fcControl(pathFollower.getYSpeed(pose.y), pathFollower.getXSpeed(pose.x), 0, pose.h+90);
 //            robot.getDrivetrain().powerTelemetry();
 
             telemetry.update();

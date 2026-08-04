@@ -38,27 +38,30 @@ public class TestPathFollower {
     void testPathFollower() {
         MockDT dt = new MockDT(new Pose2D(0, 0, 0));
 
-        PController xController = new PController(0.1, 0, 2);
-        PController yController = new PController(0.1, 0, 2);
+        PController xController = new PController(3, 0, 2);
+        PController yController = new PController(3, 0, 2);
 
         ArrayList<Coordinate2D> path = new ArrayList<>();
         path.add(new Coordinate2D(0,0));
-        path.add(new Coordinate2D(10,0));
-//        path.add(new Coordinate2D(10,10));
-//        path.add(new Coordinate2D(0,10));
-//        path.add(new Coordinate2D(0,0));
+        path.add(new Coordinate2D(24,0));
+        path.add(new Coordinate2D(24,24));
+        path.add(new Coordinate2D(0,24));
+        path.add(new Coordinate2D(0,0));
 
         PathFollower pathFollower = new PathFollower(path, xController, yController);
+        pathFollower.setFeedforwardRadius(9);
 
         for (int i = 0; i < 100; i++) {
             Pose2D pose = dt.getPosition();
+
+            if (xController.atTarget(pose.x) && yController.atTarget(pose.y)) break;
+
             pathFollower.updatePControllerTarget(pose);
 
             double xPower = pathFollower.getXSpeed(pose.x);
             double yPower = pathFollower.getYSpeed(pose.y);
 
             dt.fcControl(xPower, yPower, 0);
-
             dt.update();
         }
     }
